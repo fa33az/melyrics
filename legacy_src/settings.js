@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { Redis } from '@upstash/redis';
 
 let redis = null;
@@ -17,9 +16,7 @@ try {
     console.warn("KV Redis not configured properly. Falling back to local FS.");
 }
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const SETTINGS_FILE = path.join(__dirname, 'settings.json');
+const SETTINGS_FILE = path.join(process.cwd(), 'legacy_src', 'settings.json');
 
 const DEFAULT_SETTINGS = {
     primaryColor: '#1DB954',
