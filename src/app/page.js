@@ -34,15 +34,6 @@ export default function Overlay() {
     const lyricsDataRef = useRef([]);
 
     useEffect(() => {
-        // Load CSS dynamically for this page only
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = '/css/style.css';
-        document.head.appendChild(link);
-        return () => document.head.removeChild(link);
-    }, []);
-
-    useEffect(() => {
         let trackInterval, settingsInterval, syncFrame;
 
         const init = async () => {
@@ -169,16 +160,21 @@ export default function Overlay() {
 
     if (!auth) {
         return (
-            <div id="auth-container">
-                <h1>Spotify Lyrics Overlay</h1>
-                <p>Please authenticate to continue.</p>
-                <a href="/api/auth" className="btn">Login with Spotify</a>
-            </div>
+            <>
+                <link rel="stylesheet" href="/css/style.css" />
+                <div id="auth-container">
+                    <h1>Spotify Lyrics Overlay</h1>
+                    <p>Please authenticate to continue.</p>
+                    <a href="/api/auth" className="btn">Login with Spotify</a>
+                </div>
+            </>
         );
     }
 
     return (
-        <div id="overlay-container">
+        <>
+            <link rel="stylesheet" href="/css/style.css" />
+            <div id="overlay-container">
             {settings?.showTrackInfo && track && (
                 <div className="track-info glass-panel" style={{ display: 'flex' }}>
                     {settings?.showAlbumArt && <img id="album-art" src={track.albumArt} alt="Art" />}
@@ -207,5 +203,6 @@ export default function Overlay() {
                 </div>
             </div>
         </div>
+        </>
     );
 }

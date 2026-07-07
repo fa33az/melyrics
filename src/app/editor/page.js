@@ -14,14 +14,7 @@ export default function Editor() {
     const [status, setStatus] = useState('');
 
     useEffect(() => {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = '/css/editor.css';
-        document.head.appendChild(link);
-        
         fetch('/api/settings').then(r => r.json()).then(setSettings);
-        
-        return () => document.head.removeChild(link);
     }, []);
 
     const handleSave = async () => {
@@ -45,7 +38,9 @@ export default function Editor() {
     };
 
     return (
-        <div className="editor-container">
+        <>
+            <link rel="stylesheet" href="/css/editor.css" />
+            <div className="editor-container">
             <div className="sidebar">
                 <h2>Overlay Settings</h2>
                 
@@ -96,5 +91,6 @@ export default function Editor() {
                 </div>
             </div>
         </div>
+        </>
     );
 }
