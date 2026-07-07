@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getAccessToken } from '../../../../legacy_src/services/spotify.js';
-import { store } from '../../../../legacy_src/store.js';
+import { saveTokens } from '../../../../legacy_src/store.js';
 
 export async function GET(request) {
     const searchParams = request.nextUrl.searchParams;
@@ -18,9 +18,8 @@ export async function GET(request) {
             code
         );
 
-        // Store globally. TODO: Move to Vercel KV for Serverless deployments
-        store.accessToken = data.access_token;
-        store.refreshToken = data.refresh_token;
+        // Store globally in KV / memory
+        await saveTokens(data.access_token, data.refresh_token);
         
         return NextResponse.redirect(new URL('/', request.url));
     } catch (err) {

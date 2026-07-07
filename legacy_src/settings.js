@@ -1,6 +1,21 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { Redis } from '@upstash/redis';
+
+let redis = null;
+try {
+    const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+    const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+    if (url && token) {
+        redis = new Redis({
+            url: url,
+            token: token,
+        });
+    }
+} catch (e) {
+    console.warn("KV Redis not configured properly. Falling back to local FS.");
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -8,15 +23,24 @@ const SETTINGS_FILE = path.join(__dirname, 'settings.json');
 
 const DEFAULT_SETTINGS = {
     primaryColor: '#1DB954',
-    glassBgColor: 'rgba(20, 20, 20, 0.6)',
-    activeFontSize: '2rem',
-    inactiveFontSize: '1.5rem',
+    glassBgColor: 'rgba(25, 25, 25, 0.75)',
+    activeFontSize: '42px',
+    inactiveFontSize: '24px',
+    lyricAlignment: 'center',
     showAlbumArt: true,
     showTrackInfo: true,
-    lyricAlignment: 'left'
 };
 
-export const getSettings = () => {
+export const getSettings = async () => {
+    if (redis) {
+        try {
+            const data = await redis.get('overlay_settings');
+            return data ? { ...DEFAULT_SETTINGS, ...data } : DEFAULT_SETTINGS;
+        } catch (e) {
+            console.error("Failed to read settings from KV", e);
+        }
+    }
+
     try {
         if (!fs.existsSync(SETTINGS_FILE)) {
             return DEFAULT_SETTINGS;
@@ -29,14 +53,22 @@ export const getSettings = () => {
     }
 };
 
-export const saveSettings = (newSettings) => {
+export const saveSettings = async (newSettings) => {
+    const current = await getSettings();
+    const updated = { ...current, ...newSettings };
+
+    if (redis) {
+        try {
+            await redis.set('overlay_settings', updated);
+        } catch (e) {
+            console.error("Failed to write settings to KV", e);
+        }
+    }
+
     try {
-        const current = getSettings();
-        const updated = { ...current, ...newSettings };
         fs.writeFileSync(SETTINGS_FILE, JSON.stringify(updated, null, 2), 'utf-8');
-        return updated;
     } catch (err) {
         console.error('Error saving settings:', err);
-        throw err;
     }
+    return updated;
 };

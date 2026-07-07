@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getLyrics } from '../../../../legacy_src/services/lyrics.js';
-import { store } from '../../../../legacy_src/store.js';
+import { getTokens } from '../../../../legacy_src/store.js';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request) {
-    if (!store.accessToken) {
+    const tokens = await getTokens();
+    if (!tokens.accessToken) {
         return NextResponse.json({ error: 'Server not authenticated' }, { status: 401 });
     }
 
