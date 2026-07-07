@@ -1,0 +1,180 @@
+:root {
+    --primary-color: #1DB954;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B3B3B3;
+    --bg-overlay: rgba(0, 0, 0, 0.4);
+    --glass-bg: rgba(20, 20, 20, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    
+    /* Dynamic Settings Variables */
+    --lyric-active-size: 2rem;
+    --lyric-inactive-size: 1.5rem;
+    --lyric-align: left;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    /* OBS Transparent Background */
+    background: transparent;
+    overflow: hidden; 
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Auth Container */
+#auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #121212; /* Solid background for login screen */
+}
+
+#auth-container h1 {
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+#auth-container p {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn:hover {
+    background-color: #1ed760;
+    transform: scale(1.05);
+}
+
+/* Overlay Container */
+#overlay-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 30px;
+    gap: 20px;
+}
+
+/* Track Info */
+.track-info {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    gap: 16px;
+    width: max-content;
+    max-width: 500px;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#album-art {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.track-details {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#track-name {
+    font-size: 1.2rem;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#artist-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Lyrics Container */
+.lyrics-container {
+    flex: 1;
+    overflow: hidden;
+    padding: 30px;
+    position: relative;
+    mask-image: linear-gradient(transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(transparent, black 15%, black 85%, transparent);
+}
+
+#lyrics-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 0.3s ease-out;
+    position: absolute;
+    top: 40%;
+    width: calc(100% - 60px);
+}
+
+.lyric-line {
+    font-size: var(--lyric-inactive-size);
+    text-align: var(--lyric-align);
+    font-weight: 800;
+    color: var(--text-secondary);
+    opacity: 0.5;
+    transition: color 0.3s, opacity 0.3s, transform 0.3s, font-size 0.3s;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    cursor: default;
+}
+
+.lyric-line.active {
+    font-size: var(--lyric-active-size);
+    color: var(--primary-color);
+    opacity: 1;
+    transform: scale(1.05);
+    transform-origin: var(--lyric-align);
+}
+
+.lyric-line.plain {
+    font-size: var(--lyric-inactive-size);
+    opacity: 0.8;
+}

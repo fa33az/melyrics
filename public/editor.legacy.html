@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overlay Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/editor.css">
+</head>
+<body>
+    <div class="editor-container">
+        <div class="sidebar">
+            <h2>Overlay Settings</h2>
+            
+            <div class="setting-group">
+                <label for="primaryColor">Primary Color (Active Lyric)</label>
+                <input type="color" id="primaryColor">
+            </div>
+
+            <div class="setting-group">
+                <label for="glassBgColor">Background Color (Overlay)</label>
+                <input type="text" id="glassBgColor" placeholder="rgba(20, 20, 20, 0.6)">
+            </div>
+
+            <div class="setting-group">
+                <label for="activeFontSize">Active Lyric Font Size</label>
+                <input type="text" id="activeFontSize" placeholder="e.g. 2rem or 32px">
+            </div>
+
+            <div class="setting-group">
+                <label for="inactiveFontSize">Inactive Lyric Font Size</label>
+                <input type="text" id="inactiveFontSize" placeholder="e.g. 1.5rem or 24px">
+            </div>
+
+            <div class="setting-group">
+                <label>
+                    <input type="checkbox" id="showAlbumArt"> Show Album Art
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label>
+                    <input type="checkbox" id="showTrackInfo"> Show Track Info
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label for="lyricAlignment">Lyrics Alignment</label>
+                <select id="lyricAlignment">
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                </select>
+            </div>
+
+            <button id="saveBtn" class="btn">Save Changes</button>
+            <div id="statusMessage"></div>
+        </div>
+        <div class="preview-panel">
+            <div class="preview-header">Live Preview</div>
+            <div class="iframe-wrapper">
+                <iframe src="/" id="previewIframe"></iframe>
+            </div>
+        </div>
+    </div>
+    <script src="/js/editor.js"></script>
+</body>
+</html>
