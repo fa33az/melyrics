@@ -2,6 +2,7 @@
   "name": "melyrics",
   "version": "2.0.0",
   "description": "Spotify Lyrics Overlay for OBS (Next.js)",
+  "author": "fa33az",
   "type": "module",
   "scripts": {
     "dev": "next dev",
